@@ -15,7 +15,6 @@ stockRouter.get('/ticking/data', validateInput, getTredingTickers, async (req, r
     const ticking_data = await getTickingData(historic_data, startdate, enddate)
     res.status(200).send(ticking_data);
   } catch (e) {
-    console.log(e);
     res.status(404).send("Failed")
   }
 })

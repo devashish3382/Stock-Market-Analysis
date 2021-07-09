@@ -18,7 +18,6 @@ const getTredingTickers = (req, res, next) => {
     req.tickers = response.data;
     next();
   }).catch(function (error) {
-    console.log(error);
     res.status(500).send("There is issue with fetching data, please try after some time");
   });
 }
@@ -37,7 +36,6 @@ const getHistoricData = (symbol, region) => {
     axios.request(options).then(function (response) {
       resolve(response.data);
     }).catch(function (error) {
-      console.log(error);
       reject("There is issue with fetching data, please try after some time");
     });
   })
@@ -84,19 +82,16 @@ const getTickingData = (historic_data, startdate, enddate) => {
 const getTickerData = (lowerLimit, upperLimit, prices, total, startdate, enddate) => {
   let range = 0;//0--within sd,1--above sd,-1--below sd
   let result = [];
-  let counter = 0;
   for (let i = 0; i < total; i++) {
-    console.log(prices[i].high,upperLimit,lowerLimit,range);
     if (prices[i].date >= startdate && prices[i].date <= enddate) {
-      counter++
       let { date, high } = prices[i];
       date = new Date(date * 1000).toDateString();
       if (lowerLimit >= prices[i].high && range == 0) {
-        result.push({ date, price:high,status:"went above threshhold" });
+        result.push({ date, price:high,status:"went below threshhold" });
         range = -1;
       }
       else if (upperLimit <= prices[i].high && range == 0) {
-        result.push({ date, price:high,status:"went below threshhold" });
+        result.push({ date, price:high,status:"went above threshhold" });
         range = 1
       }
       else if (range != 0 && upperLimit > prices[i].high && lowerLimit < prices[i].high) {
@@ -107,7 +102,6 @@ const getTickerData = (lowerLimit, upperLimit, prices, total, startdate, enddate
     else
       break;
   }
-  console.log(counter);
   return result;
 }
 

@@ -9,5 +9,5 @@ app.use(router);
 
 //creating server on specified port
 app.listen(port,()=>{
-console.log("server is up on port "+port);
+console.error("server is up on port "+port);
 })
