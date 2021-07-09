@@ -92,15 +92,15 @@ const getTickerData = (lowerLimit, upperLimit, prices, total, startdate, enddate
       let { date, high } = prices[i];
       date = new Date(date * 1000).toDateString();
       if (lowerLimit >= prices[i].high && range == 0) {
-        result.push({ date, high,status:"went above threshhold" });
+        result.push({ date, price:high,status:"went above threshhold" });
         range = -1;
       }
       else if (upperLimit <= prices[i].high && range == 0) {
-        result.push({ date, high,status:"went below threshhold" });
+        result.push({ date, price:high,status:"went below threshhold" });
         range = 1
       }
       else if (range != 0 && upperLimit > prices[i].high && lowerLimit < prices[i].high) {
-        result.push({ date, high,status:"comes back within threshhold" });
+        result.push({ date, price:high,status:"comes back within threshhold" });
         range = 0;
       }
     }
