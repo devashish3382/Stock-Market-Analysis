@@ -10,8 +10,11 @@ NOTE: this project is to get ticking data with a date range for a specific compa
 6. open git bash and navigate to working directory
 7. type command npm run start-prod to start the server
 8. use GET of http://{ip}:{port}/ticking/data?stock={shortname of stock}&startdate={start-date}&enddate={end date}&region={region}
+
   sample request:
   http://localhost:4000/ticking/data?stock=AMC Entertainment Holdings, Inc&startdate=2020-12-03&enddate=2021-12-03&region=US
+  
+  
   sample output:
   [
     {
