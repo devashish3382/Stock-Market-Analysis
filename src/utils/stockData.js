@@ -99,8 +99,6 @@ const getTickerData = (lowerLimit, upperLimit, prices, total, startdate, enddate
         range = 0;
       }
     }
-    else
-      break;
   }
   return result;
 }
