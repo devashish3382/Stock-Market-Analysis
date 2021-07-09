@@ -80,25 +80,23 @@ const getTickingData = (historic_data, startdate, enddate) => {
 }
 
 const getTickerData = (lowerLimit, upperLimit, prices, total, startdate, enddate) => {
-  let range = 0;//0--within sd,1--above sd,-1--below sd
+  let range = 0, prev = 0;//0--within sd,1--above sd,-1--below sd
   let result = [];
   for (let i = 0; i < total; i++) {
-    if (prices[i].date >= startdate && prices[i].date <= enddate) {
+    range = lowerLimit >= prices[i].high ? -1 : upperLimit <= prices[i].high ? 1 : 0;
+    if (prices[i].date >= startdate && prices[i].date <= enddate && prev != range) {
       let { date, high } = prices[i];
       date = new Date(date * 1000).toDateString();
-      if (lowerLimit >= prices[i].high && range == 0) {
-        result.push({ date, price:high,status:"went below threshhold" });
-        range = -1;
-      }
-      else if (upperLimit <= prices[i].high && range == 0) {
-        result.push({ date, price:high,status:"went above threshhold" });
-        range = 1
-      }
-      else if (range != 0 && upperLimit > prices[i].high && lowerLimit < prices[i].high) {
-        result.push({ date, price:high,status:"comes back within threshhold" });
-        range = 0;
-      }
+      let status = '';
+      if (prev == 0 && range == -1)
+        status = "went below threshhold";
+      else if (prev == 0 && range == 1)
+        status = "went above threshhold";
+      else
+        status = "comes back within threshhold";
+      result.push({ date, price: high, status });
     }
+    prev = range;
   }
   return result;
 }
